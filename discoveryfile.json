@@ -1,0 +1,161 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1",
+        "title": "discoveryfile",
+        "description": "API related to the fetch of Discovery file",
+        "contact": {
+            "name": "Your name"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "paths": {
+        "/registerForFile/{issueId}": {
+            "get": {
+                "description": "Allows a user to register for a discoveryfile based on the issueID",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "type": "integer",
+                        "required": true,
+                        "description": "ID of the issue for which the evidence file is requested"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the response after the registration of the file",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DiscoveryFile"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+         "/checkDiscoveryFileStatus/{issueId}": {
+            "get": {
+                "description": "Allows a user to check the discovery file status",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "type": "integer",
+                        "required": true,
+                        "description": "ID of the issue for which the evidence file is requested"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the response what is the current status of the discovery file",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DiscoveryFile"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+         "/getDiscoveryFile/{issueId}": {
+            "get": {
+                "description": "Allows a user to check the discovery file status",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "type": "integer",
+                        "required": true,
+                        "description": "ID of the issue for which the evidence file is requested"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the file if the user has proper access",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DiscoveryFile"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "DiscoveryFile": {
+            "type": "object",
+            "required": [
+                "issueId"
+            ],
+            "properties": {
+                "issueId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the Discovery file, which is system generated"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "tag names associated with the discovery file which can be used for search"
+
+                },
+                "URL": {
+                    "type": "string",
+                    "description": "Used for URL links where the discovery file is stored for a specific time - time bound URL"
+                },
+                "file": {
+                    "type": "object",
+                    "description": "Actual file which is needed"
+                },
+                "status": {
+                    "enum": [
+                        "Requested",
+                        "Approved",
+                        "File Generation in Progress",
+                        "Request Not Approved",
+                        "Expired",
+                        "Cancelled"
+                    ],
+                    "description": "Contains the various status indicating the generation of the discovery file"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}
