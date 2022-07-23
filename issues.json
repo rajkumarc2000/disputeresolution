@@ -1,0 +1,352 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1",
+        "title": "issues",
+        "description": "API for creation, fetch, updation of the issue",
+        "contact": {
+            "name": "Rajkumar"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/issue/{issueId}": {
+            "get": {
+                "description": "Returns details about a particular issue created",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "type": "integer",
+                        "required": true,
+                        "description": "ID of the issue created"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns details about a issue ",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Issue"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createIssue": {
+            "post": {
+                "description": "To create a new issue",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json",
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "in":"formData",
+                        "name":"description",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "evidencefile",
+                        "type": "file"
+                    },
+                    {
+                        "in":"formData",
+                        "name": "respondnents",
+                        "type": "array"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retuns the details of the issue created",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/deleteIssue/{issueId}": {
+            "delete": {
+                "description": "To delete a created issue",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "type": "string",
+                        "name": "issueId",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retuns the successful response when the issue is deleted",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/listIssues": {
+            "get": {
+                "description": "To Fetch List of issues",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "createdFrom",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "createdTo",
+                        "type":"string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "createdBy",
+                        "type":"string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "tags",
+                        "type":"string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retuns the details of the issue created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Issue"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/updateIssue/{issueId}": {
+            "post": {
+                "description": "Used by various parties to update the issue status, create a offer for a issue created, respond to a offer, decline a offer and other status",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "notes",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retuns the details of the issue updated",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Issue"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createThread/{issueId}": {
+            "post": {
+                "description": "To create a conversation with regards to a particular Issue created",
+                "produces": [
+                    "application/json",
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "issueId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "notes",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "filename",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "file_name",
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retuns the details of the issue created",
+                        "schema": {}
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Issue": {
+            "type": "object",
+            "required": [
+                "name",
+                "description"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Unique identifier for the issue"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Original name given when the issue was created"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "any tags given which will help in search of issues"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "information given with respect to the details of the issue"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Contains a list of values which describes the status of the issue logged",
+                    "enum": [
+                        "Created",
+                        "Deleted",
+                        "Invalid",
+                        "Resolved",
+                        "Pending",
+                        "EscalatedToDispute",
+                        "ProvideEvidence",
+                        "OfferedToClose",
+                        "OfferAccepted",
+                        "AppealAgainstResolve",
+                        "MovedToODR",
+                        "RequestForEvidence",
+                        "Expired"
+                    ]
+                },
+                "respondnents":{
+                    "type": "string",
+                    "description": "talks about the current responding person based on the status"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "used to create the necessary information when status is being modified"
+                },
+                "attachment": {
+                    "type": "object",
+                    "description": "used to store the attachments created for the issue"
+                },
+                "createdBy": {
+                    "type": "string",
+                    "description": "Details and name of the person who has reported the issue"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the issue was created"
+                },
+                "lastupdatedBy": {
+                    "type": "string",
+                    "description": "Contains information on who updated the issue at the last"
+                },
+                "lastUpdatedAt": {
+                    "type": "string",
+                    "description": "contains the timestamp details on when the issue was last updated"
+                }
+            }
+        },
+        "Conversation": {
+            "type": "object",
+            "required": [
+                "issueId"
+            ],
+            "properties": {
+                "issueId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Links the conversation to the actual issue created"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Contains the information which the person has created the thread entered"
+                },
+                "filename": {
+                    "type": "string",
+                    "description": "contains the name of the file which will be attached to the conversation"
+                },
+                "filecontent": {
+                    "type": "object",
+                    "description": "contains the actual file attached for the conversation"
+                },
+                "createdBy": {
+                    "type": "string",
+                    "description": "Details and name of the person who has reported the issue"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the issue was created"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}
